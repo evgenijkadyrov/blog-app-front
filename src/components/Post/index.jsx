@@ -9,6 +9,8 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
+import { fetchPostRemove, fetchPosts } from "../../redux/slicers/posts";
+import { useDispatch } from "react-redux";
 
 export const Post = ({
   _id,
@@ -27,8 +29,13 @@ export const Post = ({
   if (isLoading) {
     return <PostSkeleton />;
   }
+const dispatch= useDispatch()
 
-  const onClickRemove = () => {};
+  const onClickRemove = () => {
+    if(window.confirm('Do you really want to delete post?'))
+    dispatch(fetchPostRemove(_id))
+    dispatch(fetchPosts())
+  };
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
@@ -52,7 +59,8 @@ export const Post = ({
         />
       )}
       <div className={styles.wrapper}>
-        <UserInfo {...user} additionalText={createdAt} />
+
+        <UserInfo user={user} additionalText={createdAt} />
         <div className={styles.indention}>
           <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
             {isFullPost ? title : <a href={`/posts/${_id}`}>{title}</a>}
