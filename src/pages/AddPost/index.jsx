@@ -67,8 +67,8 @@ const isEditMode = Boolean(id)
       };
 
       const { data } = isEditMode?
-        instance.patch(`/posts/${id}`, fields):
-        instance.post("/posts", fields);
+        await instance.patch(`/posts/${id}`, fields):
+       await instance.post("/posts", fields);
 
       const _id = isEditMode?id:data._id;
       navigate(`/posts/${_id}`);
@@ -109,7 +109,7 @@ const isEditMode = Boolean(id)
         </Button>
       )}
       {imageUrl && (
-        <img className={styles.image} src={`process.env.REACT_APP_API_URL${imageUrl}`}
+        <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
              alt="Uploaded" />
       )}
       <br />
